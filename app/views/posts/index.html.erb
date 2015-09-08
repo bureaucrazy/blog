@@ -1,6 +1,12 @@
-<div class="form-group">
+<h1>All Posts</h1>
+
+<%= form_for posts_path, method: :get do %>
   <%= link_to fa_icon("plus"), new_post_path, class: "btn btn-primary" %>
-</div>
+  <%= search_field_tag :search, params[:search] %>
+  <button type="submit" class="btn btn-primary btn-xs">
+    <%= fa_icon("search") %>
+  </button>
+<% end %>
 
 <table class="table table-striped">
   <thead>
@@ -8,7 +14,7 @@
       <th>Title</th>
       <th>Body</th>
       <th>Last Update</th>
-      <th></th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -26,7 +32,7 @@
           <% text = "#{p.updated_at}" %><%= text %>
         </td>
         <td>
-          <%= link_to fa_icon("edit"), edit_post_path(id: p.id), class: "btn btn-info" %>
+          <%= link_to fa_icon("edit"), edit_post_path(id: p.id), class: "btn btn-primary" %>
           <%= link_to fa_icon("trash"), post_path(id: p.id), method: :delete,
           data: {confirm: "Are you sure?"}, class: "btn btn-danger" %>
         </td>
