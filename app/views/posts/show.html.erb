@@ -1,0 +1,9 @@
+<h1><%= @post.title %></h1>
+<hr>
+<div class="well">
+  <%= @post.body %>
+</div>
+<%= link_to fa_icon("reply"), request.referer, class: "btn btn-primary" %>
+<%= link_to fa_icon("edit"), edit_post_path(@post), class: "btn btn-primary" %>
+<%= link_to fa_icon("trash"), post_path(@post), method: :delete,
+data: {confirm: "Are you sure you want to delete this post?"}, class: "btn btn-danger" %>
