@@ -1,5 +1,6 @@
 class Post < ActiveRecord::Base
     validates :title, presence: true, uniqueness: true
+    has_many :comments, dependent: :destroy
 
     def self.search(value)
       search_term = "%#{value}%"
