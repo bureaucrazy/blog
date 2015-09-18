@@ -1,11 +1,39 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <%= link_to "Home", root_path, class: "navbar-brand" %>
+      <%= link_to fa_icon("home"), root_path, class: "navbar-brand" %>
       <ul class="nav navbar-nav">
-        <li><%= link_to "Posts", posts_path, class: "my-link-class" %></li>
-        <li><%= link_to "About", about_path, class: "my-link-class" %></li>
+        <li><%= link_to fa_icon("book"), posts_path, class: "my-link-class fa-lg" %></li>
+        <li><%= link_to fa_icon("question"), about_path, class: "my-link-class fa-lg" %></li>
       </ul>
     </div>
+    <ul class="nav navbar-nav navbar-right">
+      <% if user_signed_in? %>
+        <% if @viewing_posts %>
+          <form class="navbar-form navbar-left" role="search">
+            <%= link_to "#{fa_icon("pencil")} New".html_safe, new_post_path, class: "btn btn-default" %>
+
+            <%= form_for posts_path, method: :get do %>
+              <%= search_field_tag :search, params[:search], class: "form-control", placeholder: "Search.." %>
+              <button type="submit" class="btn btn-default">
+                <%= fa_icon("search") %>
+              </button>
+            <% end %>
+          </form>
+        <% end %>
+
+        <li><%= link_to edit_users_path do %>
+          Hello <%= current_user.first_name %>
+          <% end %>
+        </li>
+          <% if current_user.admin? %>
+            <li><%= link_to fa_icon("print"), "/delayed_job", class: "fa-lg", :target => "_blank" %></li>
+          <% end %>
+        <li><%= link_to fa_icon("sign-out"), sessions_path, class: "fa-lg", method: :delete %></li>
+      <% else %>
+        <li><%= link_to fa_icon("sign-in"), new_session_path, class: "fa-lg" %></li>
+        <li><%= link_to "Sign Up", new_user_path %></li>
+      <% end %>
+    </ul>
   </div>
 </nav>

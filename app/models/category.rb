@@ -1,3 +1,4 @@
 class Category < ActiveRecord::Base
-    validates :title, presence: true, uniqueness: true
+    has_many :posts, dependent: :nullify
+    validates :name, presence: true, uniqueness: true
 end

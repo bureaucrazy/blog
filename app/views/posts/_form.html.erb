@@ -1,4 +1,19 @@
-<% if @post.errors.any? %>
+<%= simple_form_for (@post || Post.new) , html: {class: "form-horizontal"} do |f| %>
+  <%= f.input :title, hint: "A title is required" %>
+  <%= f.input :body, input_html: {placeholder: "What's on your mind?"} %>
+  <%= f.association :category, include_blank: false %>
+  <%= f.association :tags, as: :check_boxes %>
+  <% if @post.image.present? %>
+    <%= image_tag @post.image.url() %>
+  <% end %>
+  <%= f.input :image %>
+  <div class="form-group">
+    <%= link_to fa_icon("reply"), request.referer, class: "btn btn-primary" %>
+    <%= f.button :submit, class: "btn-primary", data: {disable_with: "saving.."} %>
+  </div>
+<% end %>
+
+<!-- <% if @post.errors.any? %>
   <ul>
     <% @post.errors.full_messages.each do |msg| %>
     <li><%= msg %></li>
@@ -18,7 +33,15 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :category_id %>
+    <%= f.collection_select :category_id, Category.all, :id, :name, {},
+                            {class: "form-control"} %>
+ </div>
+ <div class="form-group">
+   <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name %>
+ </div>
+  <div class="form-group">
     <%= f.submit class: "btn btn-primary", data: {disable_with: "Saving.."} %>
     <%= link_to fa_icon("reply"), request.referer, class: "btn btn-primary" %>
   </div>
-<% end %>
+<% end %> -->
