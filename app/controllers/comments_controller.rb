@@ -7,13 +7,17 @@ class CommentsController < ApplicationController
     @comment.post = @post
     @comment.user = current_user
 
-    if @comment.save
-      # CommentsMailer.notify_post_owner(@comment).deliver_now
-      CommentsMailer.delay(run_at: 1.minutes.from_now).notify_post_owner(@comment)
-      redirect_to post_path(@post), notice: "Comment successfully created."
-    else
-      # flash[:alert] = "Oops.."
-      render "/posts/show"
+    respond_to do |format|
+      if @comment.save
+        # CommentsMailer.notify_post_owner(@comment).deliver_now
+        CommentsMailer.delay(run_at: 1.minutes.from_now).notify_post_owner(@comment)
+        format.html { redirect_to post_path(@post), notice: "Comment successfully created." }
+        format.js   { render :create_success }
+      else
+        # flash[:alert] = "Oops.."
+        format.html { render "/posts/show" }
+        format.js   { render js: "alert(\"Comment not saved\");"}
+      end
     end
   end
 

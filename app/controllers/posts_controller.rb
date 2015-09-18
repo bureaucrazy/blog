@@ -7,7 +7,7 @@ class PostsController < ApplicationController
 
   def index
     @viewing_posts = true
-    
+
     if params[:search]
       @posts = Post.search(params[:search]).order("#{params[:order]}").page(params[:page]).per(PER_PAGE)
     else
@@ -31,8 +31,13 @@ class PostsController < ApplicationController
   end
 
   def show
-    @comment = Comment.new
-    @favourite = @post.favourites.find_by_user_id(current_user.id) if user_signed_in?
+    respond_to do |format|
+      @comment = Comment.new
+      @favourite = @post.favourites.find_by_user_id(current_user.id) if user_signed_in?
+
+      format.html { render }
+      format.json { render json: @post }
+    end
   end
 
   def edit
