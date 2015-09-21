@@ -1,0 +1,53 @@
+<div class="media">
+  <div class="media-left media-top">
+    <a href="#">
+      <% if @post.image.present? %>
+        <%= image_tag @post.image.url(), size: "320" %>
+      <% end %>
+    </a>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading"><%= @post.title %></h4>
+    <%= @post.body %>
+  </div>
+</div>
+<hr>
+<p>Category: <%= @post.category_name %>
+<p>Tags: <%= @post.tags.map {|x| x.name }.join(", ") %></p>
+
+<p>Created by <%= @post.user_name %> on
+              <%= formatted_date(@post.created_at) %></p>
+<%= link_to fa_icon("reply"), posts_path, class: "btn btn-primary" %>
+
+<% if !@post.locked %>
+  <% if can? :edit, @post %>
+      <%= link_to fa_icon("edit"), edit_post_path(@post), class: "btn btn-primary" %>
+  <% end %>
+  <% if can? :destroy, @post %>
+    <%= link_to fa_icon("trash"), post_path(@post), method: :delete,
+                data: {confirm: "Are you sure you want to delete this post?"}, class: "btn btn-danger" %>
+  <% end %>
+<% end %>
+
+<% if can? :destroy, @post %>
+  <%= link_to (@post.locked ? fa_icon("lock") : fa_icon("unlock")),
+              post_path(@post, {post: {locked: !@post.locked}}),
+              class: "btn btn-primary fa", method: :patch %>
+<% end %>
+
+<%= render "/favourites/favourite" %>
+
+<h2>New Comment</h2>
+<%= simple_form_for [@post, @comment], remote: true do |f| %>
+  <%= f.input :body %>
+  <%= f.submit "Add Comment", class: "btn btn-primary" %>
+<% end %>
+
+<% if @post.comments.count > 0 %>
+  <h2>Comments</h2>
+  <div class="comments">
+    <% @post.comments.latest_first.each do |com| %>
+      <%= render "/comments/comment", com: com %>
+    <% end %>
+  </div>
+<% end %>

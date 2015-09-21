@@ -24,7 +24,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+ gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
@@ -32,13 +32,30 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'kaminari'
+gem 'faker'
+gem 'cowsay'
+gem 'bootstrap-sass'
+gem 'cancancan'
+gem 'font-awesome-rails'
+
+gem 'delayed_job_active_record'
+gem 'delayed_job_web'
+
+gem 'simple_form'
+gem 'quiet_assets'
+
+gem 'carrierwave'
+gem 'mini_magick'
+
+group :development do
+  gem 'letter_opener'
+end
+
 group :development, :test do
-  gem "interactive_editor"
-  gem "awesome_print"
-  gem "hirb"
-  gem "faker"
-  gem "cowsay"
-  gem "bootstrap-sass"
+  gem 'interactive_editor'
+  gem 'awesome_print'
+  gem 'hirb'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

@@ -1,7 +1,25 @@
 Rails.application.routes.draw do
+  patch "/posts/:id/lock" => "posts#lock", as: :lock_post
+
+  match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
+
+  resources :users, only: [:new, :create] do
+    collection do
+      get :edit
+      patch :update
+    end
+  end
+
+  resources :sessions, only: [:new, :create] do
+    delete :destroy, on: :collection
+  end
+
+  resources :posts do
+    resources :comments, only: [:create, :destroy]
+    resources :favourites, only: [:create, :destroy]
+  end
 
   root "home#index"
-
   get "/about" => "home#about"
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,8 +1,14 @@
 class Comment < ActiveRecord::Base
-  validates :body,  presence:   {message: "must be present"},
-                    # this will check for the uniqueness of the title/body
-                    # combination. So title doesn't have to be unique by itself
-                    # but the combination with body should.
-                    uniqueness: true,
-                    length:     {minimum: 3}    # title must have at least 3 chars
+    belongs_to :post
+    belongs_to :user
+    validates :body, presence: true
+    scope :latest_first, lambda { order("created_at DESC") }
+
+    def user_name
+      if user
+        user.full_name
+      else
+        "Anonymous"
+      end
+    end
 end
