@@ -1,0 +1,15 @@
+<div id="favourite">
+  <% if user_signed_in? %>
+    <% if current_user.favourited_post?(@post) %>
+      <%= link_to "#{fa_icon("star")} #{@post.favourites.count}".html_safe,
+                    post_favourite_path(@post, @post.favourite_for(current_user)),
+                    class: "btn btn-primary", title: "Un-Favourite",
+                    method: :delete, remote: true %>
+    <% else %>
+      <%= link_to "#{fa_icon("star-o")} #{@post.favourites.count}".html_safe,
+                    post_favourites_path(@post),
+                    class: "btn btn-primary",
+                    method: :post, remote: true %>
+    <% end %>
+  <% end %>
+</div>

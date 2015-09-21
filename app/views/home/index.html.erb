@@ -1,1 +1,9 @@
-<h1>Welcome</h1>
+<div class="jumbotron">
+  <h1><%= @latest_post.title %></h1>
+  <p><%= truncate(@latest_post.body, length: 200, separator: " ") %></p>
+  <p>
+    <em>by <%= @latest_post.user.first_name %></em> on
+    <%= formatted_date(@latest_post.created_at) %>
+  </p>
+  <p><%= link_to "Learn more", posts_path, class: "btn btn-primary btn-lg" %></p>
+</div>

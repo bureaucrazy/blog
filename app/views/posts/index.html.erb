@@ -1,0 +1,42 @@
+<%#= link_to "order by title", posts_path(search: params[:search], order: "title") %>
+<%#= link_to "order by body", posts_path(search: params[:search], order: "body") %>
+
+<h1>All Posts</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Body</th>
+      <th>Last Update</th>
+      <% if user_signed_in? && current_user.admin? %>
+        <th>Actions</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @posts.each do |p| %>
+      <tr>
+        <td>
+          <% text = "#{p.title}" %>
+          <%= link_to(text, post_path(p)) %>
+        </td>
+        <td>
+          <% text = "#{p.body}" %>
+          <%= link_to(truncate(text, length: 35, separator: " ",
+                      omission: "... (more)"), post_path(p)) %>
+        </td>
+        <td>
+          <% text = "#{p.updated_at}" %><%= text %>
+        </td>
+        <% if user_signed_in? && current_user.admin? %>
+          <td>
+            <%= link_to fa_icon("edit"), edit_post_path(id: p.id), class: "btn btn-primary" %>
+            <%= link_to fa_icon("trash"), post_path(id: p.id), method: :delete,
+            data: {confirm: "Are you sure?"}, class: "btn btn-danger" %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    <%= paginate @posts %>
+  </tbody>
+</table>
